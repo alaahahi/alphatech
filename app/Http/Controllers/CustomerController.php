@@ -987,6 +987,6 @@ class CustomerController extends Controller
     }
     public function app_config(Request $request )
     { 
-        return response()->json(App_config::all());
+        return response()->json(App_config::all()->first());
     }
 }
