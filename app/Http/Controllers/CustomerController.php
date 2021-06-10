@@ -989,4 +989,18 @@ class CustomerController extends Controller
     { 
         return response()->json(App_config::all()->first());
     }
+    public function removorder($id)
+    { 
+        DB::table('order')->where('order.id', '=',$id)->delete();
+        return response()->json("Removed");
+    }
+    public function feedbackorder($id,$rating,$comment)
+    { 
+        $companyId= DB::table('order')->where('id',$id)->first()->companyId;
+        DB::table('order')->where('id',$id)->update(['service_rating' =>$rating,'service_comment'=>$comment]);
+        $avg_ratting=(int) DB::table('order')->where('companyId', $companyId)->where('service_rating','!=', 0)->avg('service_rating');
+        DB::table('company')->where('id',$companyId)->update(['ratting' =>$avg_ratting]);
+        return response()->json("Add Services Ratting");
+
+    }
 }
